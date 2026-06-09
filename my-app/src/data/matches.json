@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "homeTeam": "Lakers",
+    "awayTeam": "Warriors",
+    "homeScore": 112,
+    "awayScore": 109,
+    "date": "2026-05-25T20:00:00Z",
+    "status": "FINISHED",
+    "league": "NBA"
+  },
+  {
+    "id": "2",
+    "homeTeam": "Celtics",
+    "awayTeam": "Heat",
+    "homeScore": 105,
+    "awayScore": 98,
+    "date": "2026-05-26T18:30:00Z",
+    "status": "FINISHED",
+    "league": "NBA"
+  },
+  {
+    "id": "3",
+    "homeTeam": "Bulls",
+    "awayTeam": "Knicks",
+    "homeScore": null,
+    "awayScore": null,
+    "date": "2026-05-30T21:00:00Z",
+    "status": "UPCOMING",
+    "league": "NBA"
+  },
+  {
+    "id": "4",
+    "homeTeam": "Mavericks",
+    "awayTeam": "Suns",
+    "homeScore": null,
+    "awayScore": null,
+    "date": "2026-06-01T19:00:00Z",
+    "status": "UPCOMING",
+    "league": "NBA"
+  },
+  {
+    "id": "5",
+    "homeTeam": "Real Madrid",
+    "awayTeam": "Barcelona",
+    "homeScore": 88,
+    "awayScore": 85,
+    "date": "2026-05-24T16:00:00Z",
+    "status": "FINISHED",
+    "league": "Euroleague"
+  },
+  {
+    "homeTeam": "UTN",
+    "awayTeam": "UNNE",
+    "homeScore": null,
+    "awayScore": null,
+    "date": "2026-06-05T23:00:00.000Z",
+    "status": "UPCOMING",
+    "league": "NBA",
+    "id": "6"
+  }
+]
