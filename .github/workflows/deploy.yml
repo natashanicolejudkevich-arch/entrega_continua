@@ -9,66 +9,97 @@ on:
       - main
   workflow_dispatch:
 
-jobs:
-  verify-and-deploy:
-    runs-on: ubuntu-latest
+defaults:
+  run:
+    working-directory: ./my-app
 
+jobs:
+  load-data:
+    name: Load JSON Data
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-
-      - name: Load JSON Data
+      - name: Load matches JSON
         run: cat src/data/matches.json
 
+  lint:
+    name: Run ESLint
+    needs: load-data
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
       - name: Install dependencies
         run: npm ci
-
       - name: Run ESLint
         run: npm run lint
 
+  test:
+    name: Run Tests
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
       - name: Run Tests
         run: npm run test
 
+  deploy:
+    name: Deploy to Vercel
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
-
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
       - name: Build Project Artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
+  notify:
+    name: Discord Notification
+    needs: [load-data, lint, test, deploy]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
       - name: Discord notification (Success)
-        if: success()
+        if: ${{ needs.deploy.result == 'success' }}
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: success
           title: "Deploy Exitoso"
           description: "El pipeline de CI/CD se ha ejecutado y el proyecto se ha desplegado correctamente en Vercel."
-
+          
       - name: Discord notification (Failure)
-        if: failure()
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: failure
           title: "Error en el Deploy"
-          description: "El pipeline de CI/CD ha fallado en algún paso (tests, build, o deploy)."
+          description: "El pipeline de CI/CD ha fallado en algún paso (carga de datos, lint, tests, build, o deploy)."

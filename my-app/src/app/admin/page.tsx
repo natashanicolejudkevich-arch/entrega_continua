@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Match, MatchStatus } from '@/components/MatchCard';
 
+
 export default function AdminPage() {
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
@@ -77,15 +78,15 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white p-8 font-sans">
       <div className="max-w-6xl mx-auto flex flex-col gap-10">
-        
+
         <header className="border-b border-zinc-800 pb-6 flex flex-col gap-4">
           <div className="flex justify-between items-start">
             <div>
               <h1 className="text-4xl font-black text-orange-500">Panel ABM - Básquet</h1>
               <p className="text-zinc-400 mt-2">Administra los partidos, actualiza resultados y elimina registros.</p>
             </div>
-            <a 
-              href="/" 
+            <a
+              href="/"
               className="inline-flex items-center justify-center bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-bold py-2 px-4 rounded-lg transition-all hover:-translate-y-0.5"
             >
               Volver a Inicio
@@ -140,8 +141,8 @@ export default function AdminPage() {
                     <span className="text-zinc-300">{match.homeTeam}</span> vs <span className="text-zinc-300">{match.awayTeam}</span>
                   </td>
                   <td className="py-3 px-2">
-                    <select 
-                      value={match.status} 
+                    <select
+                      value={match.status}
                       onChange={(e) => handleUpdateMatch(match.id, { status: e.target.value as MatchStatus })}
                       className="bg-zinc-800 border border-zinc-700 text-sm p-1 rounded"
                     >
@@ -151,24 +152,24 @@ export default function AdminPage() {
                     </select>
                   </td>
                   <td className="py-3 px-2 flex items-center gap-2">
-                    <input 
-                      type="number" 
-                      placeholder="Local" 
-                      value={match.homeScore ?? ''} 
+                    <input
+                      type="number"
+                      placeholder="Local"
+                      value={match.homeScore ?? ''}
                       onChange={(e) => handleUpdateMatch(match.id, { homeScore: e.target.value ? Number(e.target.value) : null })}
-                      className="bg-zinc-800 border border-zinc-700 w-16 p-1 rounded text-center text-sm" 
+                      className="bg-zinc-800 border border-zinc-700 w-16 p-1 rounded text-center text-sm"
                     />
                     <span>-</span>
-                    <input 
-                      type="number" 
-                      placeholder="Visita" 
-                      value={match.awayScore ?? ''} 
+                    <input
+                      type="number"
+                      placeholder="Visita"
+                      value={match.awayScore ?? ''}
                       onChange={(e) => handleUpdateMatch(match.id, { awayScore: e.target.value ? Number(e.target.value) : null })}
-                      className="bg-zinc-800 border border-zinc-700 w-16 p-1 rounded text-center text-sm" 
+                      className="bg-zinc-800 border border-zinc-700 w-16 p-1 rounded text-center text-sm"
                     />
                   </td>
                   <td className="py-3 px-2 text-right">
-                    <button 
+                    <button
                       onClick={() => handleDeleteMatch(match.id)}
                       className="text-red-500 hover:text-red-400 text-sm font-semibold transition-colors"
                     >
