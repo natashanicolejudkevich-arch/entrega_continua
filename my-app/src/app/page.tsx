@@ -1,19 +1,19 @@
 import MatchCard, { Match } from "@/components/MatchCard";
 import Image from "next/image";
+import fs from 'fs';
+import path from 'path';
 
 export default async function Home() {
-  const apiUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}/api/matches`
-    : 'http://localhost:3000/api/matches';
-
   let matches: Match[] = [];
   try {
-    const res = await fetch(apiUrl, { cache: 'no-store' });
-    if (res.ok) {
-      matches = await res.json();
-    }
+    const filePath = path.join(process.cwd(), 'src', 'data', 'matches.json');
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    matches = JSON.parse(fileContents);
+    
+    // Ordenar los partidos por fecha (los más recientes primero)
+    matches.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   } catch (error) {
-    console.error("Error fetching matches:", error);
+    console.error("Error loading matches:", error);
   }
 
   const finishedMatches = matches.filter(m => m.status === 'FINISHED');
