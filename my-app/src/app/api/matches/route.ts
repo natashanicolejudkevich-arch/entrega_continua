@@ -10,10 +10,10 @@ export async function GET() {
     const matches = JSON.parse(fileContents);
     
     // Podemos ordenar los partidos por fecha (los más recientes primero)
-    matches.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    matches.sort((a: { date: string }, b: { date: string }) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     return NextResponse.json(matches);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Error leyendo los datos de los partidos' }, { status: 500 });
   }
 }
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     fs.writeFileSync(filePath, JSON.stringify(matches, null, 2));
 
     return NextResponse.json(newMatch, { status: 201 });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Error al guardar el partido' }, { status: 500 });
   }
 }

@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Match, MatchStatus } from '@/components/MatchCard';
-
 
 export default function AdminPage() {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -13,10 +13,6 @@ export default function AdminPage() {
   const [awayTeam, setAwayTeam] = useState('');
   const [date, setDate] = useState('');
   const [league, setLeague] = useState('NBA');
-
-  useEffect(() => {
-    fetchMatches();
-  }, []);
 
   const fetchMatches = async () => {
     try {
@@ -31,6 +27,11 @@ export default function AdminPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchMatches();
+  }, []);
 
   const handleAddMatch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,12 +86,12 @@ export default function AdminPage() {
               <h1 className="text-4xl font-black text-orange-500">Panel ABM - Básquet</h1>
               <p className="text-zinc-400 mt-2">Administra los partidos, actualiza resultados y elimina registros.</p>
             </div>
-            <a
+            <Link
               href="/"
               className="inline-flex items-center justify-center bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-bold py-2 px-4 rounded-lg transition-all hover:-translate-y-0.5"
             >
               Volver a Inicio
-            </a>
+            </Link>
           </div>
         </header>
 
