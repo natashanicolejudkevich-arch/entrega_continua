@@ -3,7 +3,8 @@
     "id": "1",
     "homeTeam": "Lakers",
     "awayTeam": "Warriors",
-    "homeScore": "awayScore": 109,
+    "homeScore": 112,
+    "awayScore": 109,
     "date": "2026-05-25T20:00:00Z",
     "status": "FINISHED",
     "league": "NBA"
